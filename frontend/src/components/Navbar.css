@@ -1,0 +1,57 @@
+/* Base styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #f9f9f6;
+    border-bottom: 1px solid #e2e8f0;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .logo {
+    height: 40px;
+    width: auto;
+  }
+  
+  /* Center links */
+  .navbar-center {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+  }
+  
+  .navbar-center li a {
+    text-decoration: none;
+    color: #1a202c;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  
+  .navbar-center li a:hover {
+    color: #2f855a;
+  }
+  
+  /* Sign in button */
+  .signin-btn {
+    background: transparent;
+    border: 1.5px solid #2f855a;
+    padding: 8px 16px;
+    border-radius: 6px;
+    color: #2f855a;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .signin-btn:hover {
+    background-color: #2f855a;
+    color: white;
+  }
+  

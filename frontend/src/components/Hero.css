@@ -1,0 +1,53 @@
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 60px 80px;
+    background-color: #f7f7f7;
+    flex-wrap: wrap;
+  }
+  
+  .hero-left {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .hero-left h1 {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    line-height: 1.2;
+  }
+  
+  .hero-subtext {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #555;
+  }
+  
+  .find-food-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .find-food-btn:hover {
+    background-color: #218838;
+  }
+  
+  .hero-right {
+    flex: 1;
+    text-align: center;
+    min-width: 300px;
+  }
+  
+  .hero-image {
+    max-width: 100%;
+    height: auto;
+  }
+  
