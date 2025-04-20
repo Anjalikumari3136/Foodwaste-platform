@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const styles = {
   container: {
@@ -62,37 +63,80 @@ const styles = {
     textDecoration: "none",
     cursor: "pointer",
   },
+  error: {
+    color: "red",
+    fontSize: "0.9rem",
+    marginTop: "0.5rem",
+    textAlign: "center",
+  },
 };
 
 const SignIn = () => {
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSignupRedirect = (e) => {
     e.preventDefault();
     navigate("/signup");
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      const res = await axios.post("http://localhost:3000/users/login", {
+        email,
+        password,
+      });
+
+      // Store token (you can also store user info if needed)
+      localStorage.setItem("token", res.data.token);
+      // Navigate to home page
+      navigate("/home");
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed. Please try again.");
+    }
+  };
+
   return (
     <div style={styles.container}>
       <div style={styles.card}>
         <h2 style={styles.title}>Sign In</h2>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div style={styles.formGroup}>
             <label htmlFor="email" style={styles.label}>Email</label>
-            <input id="email" type="email" placeholder="you@example.com" style={styles.input} />
+            <input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              style={styles.input}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
           </div>
           <div style={styles.formGroup}>
             <label htmlFor="password" style={styles.label}>Password</label>
-            <input id="password" type="password" placeholder="••••••••" style={styles.input} />
+            <input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              style={styles.input}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
           </div>
-          <div style={styles.formGroup}>
-            <label htmlFor="confirmPassword" style={styles.label}>Confirm Password</label>
-            <input id="confirmPassword" type="password" placeholder="••••••••" style={styles.input} />
-          </div>
+          {error && <p style={styles.error}>{error}</p>}
           <button type="submit" style={styles.button}>Sign In</button>
         </form>
         <p style={styles.signupText}>
-          Don't have an account? <span onClick={handleSignupRedirect} style={styles.link}>Sign up</span>
+          Don&apos;t have an account?{" "}
+          <span onClick={handleSignupRedirect} style={styles.link}>Sign up</span>
         </p>
       </div>
     </div>
