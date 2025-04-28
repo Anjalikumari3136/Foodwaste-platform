@@ -1,39 +1,46 @@
-// routes/user.routes.js
-const express = require("express");
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const User = require('../models/user.model');
 const router = express.Router();
-const { body } = require("express-validator");
-const userController = require("../controllers/user.controller");
 
-// --- Registration Route ---
-router.post(
-  "/register",
-  [
-    body("fullname.firstname")
-      .notEmpty()
-      .withMessage("First name is required."),
-    body("fullname.lastname").notEmpty().withMessage("Last name is required."),
-    body("email")
-      .isEmail()
-      .withMessage("Please enter a valid email address.")
-      .normalizeEmail(), // Optional: Standardize email format
-    body("password")
-      .isLength({ min: 5 })
-      .withMessage("Password must be at least 5 characters long."),
-  ],
-  userController.registerUser
-);
+router.post('/register', async (req, res) => {
+  try {
+    const { fullname, email, password } = req.body;
 
-// --- Login Route ---
-router.post(
-  "/login",
-  [
-    body("email")
-      .isEmail()
-      .withMessage("Please enter a valid email address.")
-      .normalizeEmail(), // Optional
-    body("password").notEmpty().withMessage("Password is required."), // No min length check here, just check if provided
-  ],
-  userController.loginUser // Add a login controller function
-);
+    // Check if all required fields are present
+    if (!fullname || !email || !password) {
+      return res.status(400).json({ message: "All fields are required (fullname, email, password)" });
+    }
+
+    // Check if user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user
+    const newUser = new User({
+      fullname: {
+        firstname: fullname.firstname,
+        lastname: fullname.lastname,
+      },
+      email,
+      password: hashedPassword,
+    });
+
+    // Save the user to the database
+    const savedUser = await newUser.save();
+
+    // Send success response
+    res.status(201).json({ message: 'User registered successfully', user: savedUser });
+    
+  } catch (error) {
+    console.error('Error during registration:', error);
+    res.status(500).json({ message: 'Registration failed', error: error.message });
+  }
+});
 
 module.exports = router;

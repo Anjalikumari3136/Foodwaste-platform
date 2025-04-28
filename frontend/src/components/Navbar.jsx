@@ -10,10 +10,10 @@ export default function Navbar() {
 
       <ul className="navbar-center">
         <li><a href="/">Home</a></li>
-        <li><a href="/browse-food">Browse Food</a></li>
-        <li><a href="#">Partners</a></li>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="/browse-food">Donate Food</a></li>
+        <li><a href="#">Receivers</a></li>
+        <li><a href="/about-Us">About Us</a></li>
+        <li><a href="#">Order History</a></li>
       </ul>
 
       <div className="navbar-right">

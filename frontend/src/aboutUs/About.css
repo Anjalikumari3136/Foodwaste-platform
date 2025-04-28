@@ -1,0 +1,132 @@
+/* Container */
+.about-container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header */
+.about-header {
+  background-color: #2d2d2d;
+  color: #fff;
+  padding: 40px 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.about-header h1 {
+  margin: 0;
+  font-size: 3em;
+  font-weight: bold;
+}
+
+/* Main Section */
+.about-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  background-color: #fff;
+}
+
+.about-section h2 {
+  font-size: 2em;
+  margin-top: 40px;
+  margin-bottom: 10px;
+  color: #222;
+  border-left: 5px solid #4CAF50;
+  padding-left: 10px;
+}
+
+.about-section p {
+  font-size: 1.2em;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.about-section ul {
+  padding-left: 20px;
+  font-size: 1.1em;
+  margin-bottom: 30px;
+}
+
+.about-section li {
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+/* Core Values Section */
+.values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-around;
+  margin-top: 30px;
+}
+
+.value {
+  background-color: #e8f5e9;
+  padding: 25px 20px;
+  border-radius: 10px;
+  text-align: center;
+  flex: 1;
+  min-width: 220px;
+  max-width: 260px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.value:hover {
+  transform: translateY(-5px);
+}
+
+.value h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #388e3c;
+}
+
+/* CTA */
+.cta {
+  text-align: center;
+  margin-top: 60px;
+  font-size: 1.5em;
+  font-weight: 600;
+  color: #444;
+  background-color: #d0f0c0;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+/* Footer */
+.about-footer {
+  background-color: #2d2d2d;
+  color: white;
+  text-align: center;
+  padding: 25px 20px;
+  margin-top: 60px;
+  font-size: 1em;
+  position: relative;
+  box-shadow: 0 -2px 4px rgba(0,0,0,0.2);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+  .values {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .about-section {
+    padding: 40px 15px;
+  }
+
+  .about-header h1 {
+    font-size: 2.2em;
+  }
+
+  .cta {
+    font-size: 1.3em;
+  }
+}

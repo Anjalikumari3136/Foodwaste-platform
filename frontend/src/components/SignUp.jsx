@@ -95,7 +95,7 @@ const SignUp = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:3000/users/register", {
+      const res = await axios.post("http://localhost:5000/api/users/register", {
         fullname: { firstname: firstName, lastname: lastName },
         email,
         password,
@@ -176,3 +176,7 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
+
+
+

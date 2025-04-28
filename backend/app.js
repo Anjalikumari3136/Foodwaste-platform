@@ -1,29 +1,97 @@
-// app.js
-const dotenv = require("dotenv");
-dotenv.config(); // Make sure this runs FIRST to load JWT_SECRET
+// const express = require('express');
+// const cors = require('cors');
+// const connectToDb = require('./db/db');
+// const userRoutes = require('./routes/user.routes');
+// const errorHandler = require('./middleware/errorHandler');
+// const securityMiddleware = require('./middleware/security');
+// const logger = require('./config/logger');
+// const swaggerDocs = require('./docs/swagger');
 
-const express = require("express");
-const cors = require("cors");
-const connectToDb = require("./db/db"); // Assuming you have this DB connection file
-const userRoutes = require("./routes/user.routes");
+// const app = express();
+
+// // Connect to database
+// connectToDb();
+
+// // Security middleware
+// securityMiddleware(app);
+
+// // Middleware
+
+// app.use(cors({
+//   origin: "http://localhost:5173", // React dev server
+//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//   credentials: true,
+// }));
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+
+// // Logger
+// app.use((req, res, next) => {
+//   logger.info(`${req.method} ${req.url}`);
+//   next();
+// });
+
+// // Routes
+// app.get('/', (req, res) => {
+//   res.send('Connected to Database successfully.');
+// });
+
+// app.use("/api/users", userRoutes); 
+
+
+// // API Documentation
+// swaggerDocs(app);
+
+// // Error handler (should be last middleware)
+// app.use(errorHandler);
+
+
+// module.exports = app;
+
+
+
+const express = require('express');
+const cors = require('cors');
+const connectToDb = require('./db/db');
+const userRoutes = require('./routes/user.routes');
+const errorHandler = require('./middleware/errorHandler');
+const securityMiddleware = require('./middleware/security');
+const logger = require('./config/logger');
+const swaggerDocs = require('./docs/swagger');
 
 const app = express();
 
 // Connect to database
 connectToDb();
 
-// Middleware
-app.use(cors()); // Allow cross-origin requests (essential for frontend/backend on different ports)
-app.use(express.json()); // Parse JSON request bodies
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
+// Security middleware
+securityMiddleware(app);
 
-// Basic root route
-app.get("/", (req, res) => {
-  res.send("Hello World");
+// Middleware
+app.use(cors({
+  origin: "http://localhost:5173", // React dev server
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true,
+}));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Logger
+app.use((req, res, next) => {
+  logger.info(`${req.method} ${req.url}`);
+  next();
 });
 
-// User routes
-app.use("/users", userRoutes);
+// Routes
+app.get('/', (req, res) => {
+  res.send('Connected to Database successfully.');
+});
+app.use("/api/users", userRoutes);
 
-// Export the app
+// API Documentation
+swaggerDocs(app);
+
+// Error handler (should be last middleware)
+app.use(errorHandler);
+
 module.exports = app;

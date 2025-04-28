@@ -1,52 +1,42 @@
-const userModel = require("../models/user.model"); // Import the user model
+const userModel = require("../models/user.model");
 
-// --- Create User ---
-module.exports.createUser = async ({
-  firstname,
-  lastname,
-  email,
-  password, // Plain password received here
-}) => {
-  // Basic check (validationResult in controller is more robust)
-  if (!firstname || !lastname || !email || !password) {
-    throw new Error("All fields are required"); // This error might not be reached if validation works
+module.exports.createUser = async ({ firstname, lastname, email, password }) => {
+  // Check if user already exists
+  const existingUser = await userModel.findOne({ email });
+  if (existingUser) {
+    throw new Error("Email already exists");
   }
 
-  // Mongoose model's pre-save hook should handle hashing the password
   const user = await userModel.create({
     fullName: { firstname, lastname },
     email,
-    password, // Pass plain password to the model
+    password,
   });
 
-  // The created user object returned by Mongoose will have the hashed password
-  return user;
+
+  const userDoc = user.toObject(); 
+delete userDoc.password;
+return userModel.findById(user._id);
 };
 
-// --- Find User and Validate Credentials for Login ---
 module.exports.findUserByCredentials = async (email, password) => {
-  // Find the user by email
+  // Remove .lean() to retain Mongoose methods
   const user = await userModel.findOne({ email });
-
-  if (!user) {
-    // User not found
-    return null; // Or throw new Error("Invalid email or password.")
-  }
-
-  // Compare the provided password with the hashed password in the database
-  // This method should exist on the user model instance
+  
+  if (!user) throw new Error("Invalid email or password");
+  
   const isMatch = await user.comparePassword(password);
+  if (!isMatch) throw new Error("Invalid email or password");
 
-  if (!isMatch) {
-    // Password doesn't match
-    return null; // Or throw new Error("Invalid email or password.")
-  }
-
-  return user;
+  return user; // Full Mongoose document with methods
 };
 
-// Alternative find user by email (might be useful elsewhere)
 module.exports.findUserByEmail = async (email) => {
   const user = await userModel.findOne({ email });
-  return user;
+  if (user) {
+    const userObject = user.toObject();
+    delete userObject.password;
+    return userObject;
+  }
+  return null;
 };

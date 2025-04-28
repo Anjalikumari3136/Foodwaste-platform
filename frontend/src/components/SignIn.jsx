@@ -52,51 +52,45 @@ const styles = {
     cursor: "pointer",
     transition: "background-color 0.3s",
   },
-  signupText: {
-    textAlign: "center",
-    fontSize: "0.9rem",
-    marginTop: "1rem",
-    color: "#666",
-  },
-  link: {
-    color: "#4f46e5",
-    textDecoration: "none",
-    cursor: "pointer",
-  },
   error: {
     color: "red",
     fontSize: "0.9rem",
-    marginTop: "0.5rem",
     textAlign: "center",
+    marginTop: "0.5rem",
+  },
+  success: {
+    color: "green",
+    fontSize: "1rem",
+    textAlign: "center",
+    marginTop: "0.5rem",
   },
 };
 
 const SignIn = () => {
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const handleSignupRedirect = (e) => {
-    e.preventDefault();
+  const handleSignUpRedirect = () => {
     navigate("/signup");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccess("");
 
     try {
-      const res = await axios.post("http://localhost:3000/users/login", {
+      const res = await axios.post("http://localhost:5000/api/users/login", {
         email,
         password,
       });
 
-      // Store token (you can also store user info if needed)
-      localStorage.setItem("token", res.data.token);
-      // Navigate to home page
-      navigate("/home");
+      localStorage.setItem("token", res.data.token);  // Save the token to localStorage
+      setSuccess("User Verified! You are now logged in.");
+      navigate("/home");  // Redirect to home page after successful login
     } catch (err) {
       setError(err.response?.data?.message || "Login failed. Please try again.");
     }
@@ -108,11 +102,9 @@ const SignIn = () => {
         <h2 style={styles.title}>Sign In</h2>
         <form onSubmit={handleSubmit}>
           <div style={styles.formGroup}>
-            <label htmlFor="email" style={styles.label}>Email</label>
+            <label style={styles.label}>Email</label>
             <input
-              id="email"
               type="email"
-              placeholder="you@example.com"
               style={styles.input}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -120,11 +112,9 @@ const SignIn = () => {
             />
           </div>
           <div style={styles.formGroup}>
-            <label htmlFor="password" style={styles.label}>Password</label>
+            <label style={styles.label}>Password</label>
             <input
-              id="password"
               type="password"
-              placeholder="••••••••"
               style={styles.input}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -132,11 +122,12 @@ const SignIn = () => {
             />
           </div>
           {error && <p style={styles.error}>{error}</p>}
+          {success && <p style={styles.success}>{success}</p>}
           <button type="submit" style={styles.button}>Sign In</button>
         </form>
-        <p style={styles.signupText}>
-          Don&apos;t have an account?{" "}
-          <span onClick={handleSignupRedirect} style={styles.link}>Sign up</span>
+        <p style={styles.signinText}>
+          Don't have an account?{" "}
+          <span onClick={handleSignUpRedirect} style={styles.link}>Sign Up</span>
         </p>
       </div>
     </div>
